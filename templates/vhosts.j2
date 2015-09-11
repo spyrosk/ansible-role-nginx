@@ -1,10 +1,21 @@
 {% for vhost in nginx_vhosts %}
 server {
     listen {{ vhost.listen | default('80 default_server') }};
+    {% if vhost.ssl_certificate is defined %}
+    ssl_certificate {{ vhost.ssl_certificate }};
+    {% endif %}
+    {% if vhost.ssl_certificate_key is defined %}
+    ssl_certificate_key {{ vhost.ssl_certificate_key }};
+    {% endif %}
     server_name {{ vhost.server_name }};
 
+    {% if vhost.root is defined %}
     root {{ vhost.root }};
-    index {{ vhost.index | default('index.html index.htm') }};
+    {% endif %}
+
+    {% if vhost.index is defined %}
+    index {{ vhost.index }};
+    {% endif %}
 
     {% if vhost.error_page is defined %}
     error_page {{ vhost.error_page }};
