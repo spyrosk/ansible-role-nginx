@@ -22,6 +22,9 @@
     owner: root
     group: root
     mode: 0644
+  when: nginx_yum_repo_enabled
 
 - name: Ensure nginx is installed.
-  yum: pkg=nginx state=installed enablerepo=nginx
+  yum:
+    name: "{{ nginx_package_name }}"
+    state: installed
